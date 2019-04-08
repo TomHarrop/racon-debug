@@ -9,6 +9,7 @@ import snakemake
 ###########
 
 racon_container = 'shub://TomHarrop/singularity-containers:racon_1.3.2'
+samtools_container = 'shub:/TomHarrop/singularity-containers:samtools_1.9'
 
 chunk_dir = 'data/chunk_sam'
 fasta = 'data/flye_denovo_full.racon.fasta'
@@ -32,7 +33,7 @@ rule target:
 rule racon:
     input:
         fasta = fasta,
-        aln = os.path.join(chunk_dir, 'aln.sam.{chunk_no}.bam'),
+        aln = 'output/tmp/{chunk_no}.sam',
         fq = os.path.join(chunk_dir, 'aln.sam.{chunk_no}.fastq')
     output:
         'output/chunk_{chunk_no}/racon.fasta'
@@ -50,3 +51,13 @@ rule racon:
         '{input.fasta} '
         '> {output} '
         '2> {log}'
+
+rule convert:
+    input:
+        bam = os.path.join(chunk_dir, 'aln.sam.{chunk_no}.bam')
+    output:
+        sam = 'output/tmp/{chunk_no}.sam'
+    singularity:
+        samtools_container
+    shell:
+        'samtools view -h -o {output.sam} {input.bam}'
