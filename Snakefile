@@ -9,7 +9,7 @@ import snakemake
 ###########
 
 racon_container = 'shub://TomHarrop/singularity-containers:racon_1.3.2'
-samtools_container = 'shub:/TomHarrop/singularity-containers:samtools_1.9'
+samtools_container = 'shub://TomHarrop/singularity-containers:samtools_1.9'
 
 chunk_dir = 'data/chunk_sam'
 fasta = 'data/flye_denovo_full.racon.fasta'
