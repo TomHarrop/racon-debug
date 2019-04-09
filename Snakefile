@@ -19,7 +19,7 @@ fasta = 'data/flye_denovo_full.racon.fasta'
 ########
 
 # chunks that have hung on me
-bad_chunks = ['1096']
+bad_chunks = ['1096', '1191']
 
 all_chunks = snakemake.io.glob_wildcards(
     os.path.join(chunk_dir, 'aln.sam.{chunk_no}.bam')).chunk_no
