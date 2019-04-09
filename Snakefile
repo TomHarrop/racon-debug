@@ -18,8 +18,13 @@ fasta = 'data/flye_denovo_full.racon.fasta'
 # MAIN #
 ########
 
+# chunks that have hung on me
+bad_chunks = ['1096']
+
 all_chunks = snakemake.io.glob_wildcards(
     os.path.join(chunk_dir, 'aln.sam.{chunk_no}.bam')).chunk_no
+
+chunks_to_try = [x for x in all_chunks if x not in bad_chunks]
 
 #########
 # RULES #
@@ -28,7 +33,7 @@ all_chunks = snakemake.io.glob_wildcards(
 rule target:
     input:
         expand('output/chunk_{chunk_no}/racon.fasta',
-               chunk_no=all_chunks)
+               chunk_no=chunks_to_try)
 
 rule racon:
     input:
